@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Gestión habitaciones</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+</head>
+<body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+>
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+		console.log ("ready funcion ejecutada");
+		obtener_habitaciones();
+	});
+	
+	function obtener_habitaciones(){
+		$.ajax({
+			type: "POST",
+			contentType: "application/json",
+			url: "http://localhost:8081/habitaciones/lista",
+			dataType: 'json',
+			cache: false,
+			timeout: 600000,
+			success: function (result){
+				
+				fila ="<tr><th><p>HABITACIÓN</p></th><th><p>PERSONAS</p></th></tr>";
+				
+				$("#tbl_habitaciones").append(fila);
+				$.each (result, function(i, registro){
+					console.log("Dato", registro.descripcion);
+					fila="<tr><td><p>"+ registro.nombre+
+					"</p></td><td><p>"+registro.descripcion+"</td></tr>";
+					$("#tbl_habitaciones").append(fila);
+				})
+				console.log(result);
+			},
+			error: function (e){
+				console.log("ERROR: ",e);
+			}
+		});
+	}
+	</script>
+
+	
+	
+	
+
+
+<div align="center">
+<h1><u>Estado de las habitaciones</u></h1>
+
+	<table border="4" id="tbl_habitaciones">
+	</table>
+</div>
+<div align="center">
+	<button>Recargar</button>
+</div>
+</body>
+</html>
